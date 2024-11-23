@@ -11,6 +11,23 @@
     <title>Expenses</title>
 </head>
 <body>
+    <div class="modal fade" id="modal-add-category" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Kategória hozzáadása</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    asd
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégse</button>
+                    <button type="button" class="btn btn-primary">Hozzáad</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -34,6 +51,7 @@
                                 <select name="Kategória" id="new-category" class="form-select">
                                     <option selected disabled>Válassz egy kategóriát</option>
                                     <option th:each="cat: ${categories}" th:text="${cat.name}" th:attr="value=${cat.id}"></option>
+                                    <option id="add-category" value="-1">Új...</option>
                                 </select>
                             </td>
                             <td><button class="btn btn-primary" id="add">Hozzáadás</button></td>
@@ -77,6 +95,12 @@
     </div>
 </body>
 <script th:inline="javascript">
+    $("#new-category").on("change", function(e){
+        console.log($(this).val())
+        if($(this).val() == "-1"){
+            $("#modal-add-category").modal('show')
+        }
+    });
     $("#postExpense").on("click", function(){
         $.ajax({
             url: "/expense/api/expense",
@@ -112,7 +136,7 @@
                 `)
             }
         })
-    })
+    });
     $(".delete").on("click", function(){
         let id = $(this).attr("data-target")
         $.ajax({
@@ -127,7 +151,7 @@
                 $("tr[data-id=" + id + "]").empty()
             }
         })
-    })
+    });
     $("#add").on("click", function(){
         let name = $("#new-name").val();
         let desc = $("#new-desc").val();
@@ -168,6 +192,6 @@
                 `)
             }
         })
-    })
+    });
 </script>
 </html>
