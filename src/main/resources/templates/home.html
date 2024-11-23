@@ -22,10 +22,21 @@
                         <td>Dátum</td>
                         <td>Összeg</td>
                         <td>Kategória</td>
+                        <td></td>
                     </thead>
                     <tbody>
                         <tr>
-                            
+                            <td><input type="text" name="Név" id="new-name"></td>
+                            <td><input type="text" name="Leírás" id="new-desc"></td>
+                            <td><input type="date" name="Dátum" id="new-date"></td>
+                            <td><input type="number" name="Összeg" id="new-amount"></td>
+                            <td>
+                                <select name="Kategória" id="new-category" class="form-select">
+                                    <option selected disabled>Válassz egy kategóriát</option>
+                                    <option th:each="cat: ${categories}" th:text="${cat.name}" th:attr="value=${cat.id}"></option>
+                                </select>
+                            </td>
+                            <td><button class="btn btn-primary" id="add">Hozzáadás</button></td>
                         </tr>
                     </tbody>
                 </table>
@@ -43,7 +54,7 @@
                         <td>Kategória</td>
                         <td></td>
                     </thead>
-                    <tbody id="expenseTBody">
+                    <tbody id="expenseTBody" class="align-middle">
                         <tr th:each="expense : ${expenses}" th:attr="data-id=${expense.id}">
                             <td th:text="${expense.id}"></td>
                             <td th:text="${expense.name}"></td>
@@ -52,7 +63,7 @@
                             <td th:text="${expense.amount}"></td>
                             <td th:text="${expense.category.name}"></td>
                             <td><div class="expense-actions dropdown">
-                                <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown">Műveletek</button>
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Műveletek</button>
                                 <ul class="dropdown-menu">
                                     <li><a class="delete dropdown-item" th:attr="data-target=${expense.id}">Törlés</a></li>
                                     <li><a class="modify dropdown-item" th:attr="data-target=${expense.id}">Módosítás</a></li>
