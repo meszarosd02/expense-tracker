@@ -2,6 +2,7 @@ package com.mesdominik.expensetracker
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.mesdominik.expensetracker.bodymappings.CategoryForm
+import com.mesdominik.expensetracker.bodymappings.CategoryFormWithId
 import com.mesdominik.expensetracker.bodymappings.ExpenseForm
 import com.mesdominik.expensetracker.entity.Category
 import com.mesdominik.expensetracker.entity.Expense
@@ -16,7 +17,7 @@ class ApiController(
 ) {
     //EXPENSES
     @PostMapping("/expense")
-    fun postExpense(@RequestBody expenseForm: ExpenseForm): Expense{
+    fun postExpense(@RequestBody expenseForm: ExpenseForm): Expense {
         val newExpense = Expense(
             name = expenseForm.name,
             description = expenseForm.description,
@@ -29,32 +30,39 @@ class ApiController(
     }
 
     @GetMapping("/expense")
-    fun getExpenses(): List<Expense>{
+    fun getExpenses(): List<Expense> {
         return expenseService.getExpenses()
     }
 
     @DeleteMapping("/expense")
-    fun deleteExpense(@RequestBody body: JsonNode): Long{
+    fun deleteExpense(@RequestBody body: JsonNode): Long {
         expenseService.deleteExpense(body.get("id").asLong())
         return body.get("id").asLong()
     }
 
     @PutMapping("/expense")
-    fun modifyExpense(@RequestBody body: ExpenseForm): Expense{
+    fun modifyExpense(@RequestBody body: ExpenseForm): Expense {
         return Expense(name = "", category = Category(name = ""))
     }
 
     //CATEGORIES
     @PostMapping("/category")
-    fun postCategory(@RequestBody body: CategoryForm): Category{
+    fun postCategory(@RequestBody body: CategoryForm): Category {
         val newCategory = Category(name = body.name)
         categoryService.saveCategory(newCategory)
         return newCategory
     }
 
     @DeleteMapping("/category")
-    fun deleteCategory(@RequestBody body: JsonNode): Long{
+    fun deleteCategory(@RequestBody body: JsonNode): Long {
         categoryService.deleteCategory(body.get("id").asLong())
         return body.get("id").asLong()
+    }
+
+    @PutMapping("/category")
+    fun updateCategory(@RequestBody body: CategoryFormWithId): Category {
+        val newCategory = Category(id = body.id, name = body.name)
+        categoryService.updateCategory(newCategory)
+        return newCategory
     }
 }

@@ -20,4 +20,8 @@ class CategoryService(private val repository: CategoryRepository) {
     fun deleteCategory(id: Long){
         repository.deleteById(id)
     }
+
+    fun updateCategory(cat: Category){
+        repository.updateCategory(cat.id, cat.name)
+    }
 }
