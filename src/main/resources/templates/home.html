@@ -120,5 +120,46 @@
             }
         })
     })
+    $("#add").on("click", function(){
+        let name = $("#new-name").val();
+        let desc = $("#new-desc").val();
+        let date = $("#new-date").val();
+        let amount = $("#new-amount").val();
+        let category = $("#new-category").val();
+        console.log(category)
+        $.ajax({
+            url: "/expense/api/expense",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                name: name,
+                description: desc,
+                date: date,
+                amount: amount,
+                category: category
+            }),
+            success: function(expense){
+                $("#expenseTBody").append(`
+                <tr>
+                    <td>${expense.id}</td>
+                    <td>${expense.name}</td>
+                    <td>${expense.description}</td>
+                    <td>${expense.date}</td>
+                    <td>${expense.amount}</td>
+                    <td>${expense.category.name}</td>
+                    <td>
+                        <div class="expense-actions dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Műveletek</button>
+                            <ul class="dropdown-menu">
+                                <li><a class="delete dropdown-item" th:attr="data-target=${expense.id}">Törlés</a></li>
+                                <li><a class="modify dropdown-item" th:attr="data-target=${expense.id}">Módosítás</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+                `)
+            }
+        })
+    })
 </script>
 </html>
