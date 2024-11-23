@@ -110,6 +110,7 @@
                             <thead>
                                 <th>ID</th>
                                 <th>Név</th>
+                                <th></th>
                             </thead>
                             <tbody id="category-tbody" class="align-middle">
                                 <tr th:each="category: ${categories}" th:attr="data-id=${category.id}">
@@ -138,7 +139,7 @@
             $("#modal-add-category").modal('show')
         }
     });
-    $("#add-new-category").on("click", function(){
+    $(document).on("click", "#add-new-category", function(){
         let new_name = $("#new-category-name").val();
         $.ajax({
             url: "/expense/api/category",
@@ -222,7 +223,7 @@
             }
         })
     });
-    $("#add").on("click", function(){
+    $(document).on("click", "#add", function(){
         let name = $("#new-name").val();
         let desc = $("#new-desc").val();
         let date = $("#new-date").val();
