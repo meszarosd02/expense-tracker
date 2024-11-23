@@ -1,12 +1,12 @@
 package com.mesdominik.expensetracker
 
 import com.fasterxml.jackson.databind.JsonNode
+import com.mesdominik.expensetracker.bodymappings.CategoryForm
 import com.mesdominik.expensetracker.bodymappings.ExpenseForm
 import com.mesdominik.expensetracker.entity.Category
 import com.mesdominik.expensetracker.entity.Expense
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDate
-import kotlin.math.exp
 
 @RequestMapping("/expense/api")
 @RestController
@@ -14,6 +14,7 @@ class ApiController(
     private val expenseService: ExpenseService,
     private val categoryService: CategoryService
 ) {
+    //EXPENSES
     @PostMapping("/expense")
     fun postExpense(@RequestBody expenseForm: ExpenseForm): Expense{
         val newExpense = Expense(
@@ -41,5 +42,13 @@ class ApiController(
     @PutMapping("/expense")
     fun modifyExpense(@RequestBody body: ExpenseForm): Expense{
         return Expense(name = "", category = Category(name = ""))
+    }
+
+    //CATEGORIES
+    @PostMapping("/category")
+    fun postCategory(@RequestBody body: CategoryForm): Category{
+        val newCategory = Category(name = body.name)
+        categoryService.saveCategory(newCategory)
+        return newCategory
     }
 }
