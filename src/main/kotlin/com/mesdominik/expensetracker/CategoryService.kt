@@ -16,4 +16,8 @@ class CategoryService(private val repository: CategoryRepository) {
     fun findAllCategories(): List<Category>{
         return repository.findAll()
     }
+
+    fun deleteCategory(id: Long){
+        repository.deleteById(id)
+    }
 }

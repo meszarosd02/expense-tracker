@@ -51,4 +51,10 @@ class ApiController(
         categoryService.saveCategory(newCategory)
         return newCategory
     }
+
+    @DeleteMapping("/category")
+    fun deleteCategory(@RequestBody body: JsonNode): Long{
+        categoryService.deleteCategory(body.get("id").asLong())
+        return body.get("id").asLong()
+    }
 }
