@@ -19,77 +19,96 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    asd
+                    <input type="text" class="form-control" id="new-category-name">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Mégse</button>
-                    <button type="button" class="btn btn-primary">Hozzáad</button>
+                    <button type="button" id="add-new-category" class="btn btn-primary">Hozzáad</button>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <button id="postExpense">NYOMJ MEG</button>
-                <table class="table">
-                    <thead>
-                        <td>Név</td>
-                        <td>Leírás</td>
-                        <td>Dátum</td>
-                        <td>Összeg</td>
-                        <td>Kategória</td>
-                        <td></td>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input type="text" name="Név" id="new-name"></td>
-                            <td><input type="text" name="Leírás" id="new-desc"></td>
-                            <td><input type="date" name="Dátum" id="new-date" th:attr="value=${#dates.format(#dates.createToday(), 'yyyy-MM-dd')}"></td>
-                            <td><input type="number" name="Összeg" id="new-amount"></td>
-                            <td>
-                                <select name="Kategória" id="new-category" class="form-select">
-                                    <option selected disabled>Válassz egy kategóriát</option>
-                                    <option th:each="cat: ${categories}" th:text="${cat.name}" th:attr="value=${cat.id}"></option>
-                                    <option id="add-category" value="-1">Új...</option>
-                                </select>
-                            </td>
-                            <td><button class="btn btn-primary" id="add">Hozzáadás</button></td>
-                        </tr>
-                    </tbody>
-                </table>
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-expense-tab" data-bs-toggle="tab" data-bs-target="#nav-expenses-content">Kiadások</button>
+            <button class="nav-link" id="nav-category-tab" data-bs-toggle="tab" data-bs-target="#nav-categories-content">Kategóriák</button>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav-tab-content">
+        <div class="tab-pane fade show active" id="nav-expenses-content" role="tabpanel" tabindex="0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button id="postExpense">NYOMJ MEG</button>
+                        <table class="table">
+                            <thead>
+                                <td>Név</td>
+                                <td>Leírás</td>
+                                <td>Dátum</td>
+                                <td>Összeg</td>
+                                <td>Kategória</td>
+                                <td></td>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" name="Név" id="new-name"></td>
+                                    <td><input type="text" name="Leírás" id="new-desc"></td>
+                                    <td><input type="date" name="Dátum" id="new-date" th:attr="value=${#dates.format(#dates.createToday(), 'yyyy-MM-dd')}"></td>
+                                    <td><input type="number" name="Összeg" id="new-amount"></td>
+                                    <td>
+                                        <select name="Kategória" id="new-category" class="form-select">
+                                            <option selected disabled>Válassz egy kategóriát</option>
+                                            <option th:each="cat: ${categories}" th:text="${cat.name}" th:attr="value=${cat.id}"></option>
+                                            <option id="add-category" value="-1">Új...</option>
+                                        </select>
+                                    </td>
+                                    <td><button class="btn btn-primary" id="add">Hozzáadás</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table">
+                            <thead>
+                                <td>ID</td>
+                                <td>Név</td>
+                                <td>Leírás</td>
+                                <td>Dátum</td>
+                                <td>Összeg</td>
+                                <td>Kategória</td>
+                                <td></td>
+                            </thead>
+                            <tbody id="expenseTBody" class="align-middle">
+                                <tr th:each="expense : ${expenses}" th:attr="data-id=${expense.id}">
+                                    <td th:text="${expense.id}"></td>
+                                    <td th:text="${expense.name}"></td>
+                                    <td th:text="${expense.description}"></td>
+                                    <td th:text="${expense.date}"></td>
+                                    <td th:text="${expense.amount}"></td>
+                                    <td th:text="${expense.category.name}"></td>
+                                    <td><div class="expense-actions dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Műveletek</button>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="delete dropdown-item" th:attr="data-target=${expense.id}">Törlés</a></li>
+                                            <li><a class="modify dropdown-item" th:attr="data-target=${expense.id}">Módosítás</a></li>
+                                        </ul>
+                                    </div></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table">
-                    <thead>
-                        <td>ID</td>
-                        <td>Név</td>
-                        <td>Leírás</td>
-                        <td>Dátum</td>
-                        <td>Összeg</td>
-                        <td>Kategória</td>
-                        <td></td>
-                    </thead>
-                    <tbody id="expenseTBody" class="align-middle">
-                        <tr th:each="expense : ${expenses}" th:attr="data-id=${expense.id}">
-                            <td th:text="${expense.id}"></td>
-                            <td th:text="${expense.name}"></td>
-                            <td th:text="${expense.description}"></td>
-                            <td th:text="${expense.date}"></td>
-                            <td th:text="${expense.amount}"></td>
-                            <td th:text="${expense.category.name}"></td>
-                            <td><div class="expense-actions dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Műveletek</button>
-                                <ul class="dropdown-menu">
-                                    <li><a class="delete dropdown-item" th:attr="data-target=${expense.id}">Törlés</a></li>
-                                    <li><a class="modify dropdown-item" th:attr="data-target=${expense.id}">Módosítás</a></li>
-                                </ul>
-                            </div></td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="tab-pane fade" id="nav-categories-content" tabindex="0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5>katerogiak</h5>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -101,6 +120,22 @@
             $("#modal-add-category").modal('show')
         }
     });
+    $("#add-new-category").on("click", function(){
+        let new_name = $("#new-category-name").val();
+        $.ajax({
+            url: "/expense/api/category",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                name: new_name
+            }),
+            success: function(category){
+                console.log("created new category resource with name: " + category.name + " | id: " + category.id)
+                $(`<option value=${category.id}>${category.name}</option>`).insertBefore($("#add-category"))
+                $("#modal-add-category").modal("hide")
+            }
+        })
+    })
     $("#postExpense").on("click", function(){
         $.ajax({
             url: "/expense/api/expense",
