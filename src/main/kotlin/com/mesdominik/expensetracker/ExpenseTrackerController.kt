@@ -1,7 +1,5 @@
 package com.mesdominik.expensetracker
 
-import com.mesdominik.expensetracker.entity.Category
-import com.mesdominik.expensetracker.entity.Expense
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
