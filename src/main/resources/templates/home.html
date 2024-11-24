@@ -36,6 +36,7 @@
         </div>
     </nav>
     <div class="tab-content" id="nav-tab-content">
+        <!--EXPENSES-->
         <div class="tab-pane fade show active" id="nav-expenses-content" role="tabpanel" tabindex="0">
             <div class="container">
                 <div class="row">
@@ -103,6 +104,7 @@
                 </div>
             </div>
         </div>
+        <!--CATEGORIES-->
         <div class="tab-pane fade" id="nav-categories-content" tabindex="0">
             <div class="container">
                 <div class="row">
@@ -115,8 +117,8 @@
                             </thead>
                             <tbody id="category-tbody" class="align-middle">
                                 <tr th:each="category: ${categories}" th:attr="data-id=${category.id}">
-                                    <td th:text="${category.id}"></td>
-                                    <td th:text="${category.name}"></td>
+                                    <td id="category-id" th:text="${category.id}"></td>
+                                    <td id="category-name" th:text="${category.name}"></td>
                                     <td><div class="category-actions dropdown">
                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Műveletek</button>
                                         <ul class="dropdown-menu">
@@ -124,6 +126,11 @@
                                             <li><a id="category-modify" class="dropdown-item" th:attr="data-target=${category.id}">Módosítás</a></li>
                                         </ul>
                                     </div></td>
+                                </tr>
+                                <tr>
+                                    <td>12345</td>
+                                    <td><input type="text" name="category-name" id="modify-category-name" value="Travel" data-target="12345"></td>
+                                    <td><button class="btn btn-secondary">Módosítás</button></td>
                                 </tr>
                             </tbody>
                         </table>

@@ -74,16 +74,42 @@ $(document).on("click", "#expense-delete", function(){
 });
 $(document).on("click", "#category-modify", function(){
     let id = $(this).attr("data-target");
+    let name = $(`#category-tbody>tr[data-id=${id}]>td#category-name`).text();
+    $("#category-tbody>tr[data-id=" + id + "]").replaceWith(
+        `<tr data-id=${id}>
+            <td>${id}</td>
+            <td><input type="text" name="category-name" id="modify-category-name" value=${name}></td>
+            <td><button class="btn btn-secondary" id="modify-category-modify" data-target=${id}>Módosítás</button></td>
+        </tr>`
+    )
+            
+});
+$(document).on("click", "#modify-category-modify", function(){
+    let id = $(this).attr("data-target");
+    let new_name = $(`#category-tbody>tr[data-id=${id}] input#modify-category-name`).val();
     $.ajax({
         url: "/expense/api/category",
         type: "PUT",
         contentType: "application/json",
         data: JSON.stringify({
             id: id,
-            name: "teszt"
+            name: new_name
         }),
         success: function(category){
-            $("#category-tbody>tr[data-id=" + id + "]")
+            console.log(`id: ${category.id} | name: ${category.name}`)
+            $(`#category-tbody>tr[data-id=${category.id}]`).replaceWith(
+                `<tr data-id=${category.id}>
+                    <td id="category-id">${category.id}</td>
+                    <td id="category-name">${category.name}</td>
+                    <td><div class="category-actions dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Műveletek</button>
+                        <ul class="dropdown-menu">
+                            <li><a id="category-delete" class="dropdown-item" data-target=${category.id}>Törlés</a></li>
+                            <li><a id="category-modify" class="dropdown-item" data-target=${category.id}>Módosítás</a></li>
+                        </ul>
+                    </div></td>
+                </tr>`
+            )
         }
     })
 });
