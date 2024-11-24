@@ -17,9 +17,10 @@ $(document).on("click", "#add-new-category", function(){
             console.log("created new category resource with name: " + category.name + " | id: " + category.id)
             $(`<option value=${category.id}>${category.name}</option>`).insertBefore($("#add-category"))
             $("#modal-add-category").modal("hide")
+            $("#new-category").val(category.id).change()
         }
     })
-})
+});
 $(document).on("click", "#postExpense", function(){
     $.ajax({
         url: "/expense/api/expense",
@@ -33,7 +34,7 @@ $(document).on("click", "#postExpense", function(){
             category: 1
         }),
         success: function(expense){
-            console.log("asd")
+            console.log("asd");
             $("#expenseTBody").append(`
             <tr data-id=${expense.id}>
                 <td>${expense.id}</td>
@@ -54,7 +55,7 @@ $(document).on("click", "#postExpense", function(){
             </tr>
             `)
         }
-    })
+    });
 });
 $(document).on("click", "#expense-delete", function(){
     let id = $(this).attr("data-target");
@@ -71,8 +72,6 @@ $(document).on("click", "#expense-delete", function(){
         }
     })
 });
-
-
 $(document).on("click", "#category-modify", function(){
     let id = $(this).attr("data-target");
     $.ajax({
@@ -88,7 +87,6 @@ $(document).on("click", "#category-modify", function(){
         }
     })
 });
-
 $(document).on("click", "#category-delete", function(){
     let id = $(this).attr("data-target");
     $.ajax({
@@ -123,7 +121,7 @@ $(document).on("click", "#add", function(){
             category: category
         }),
         success: function(expense){
-            console.log("POST /api/expense/")
+            console.log("POST /api/expense/");
             $("#expense-tbody").append(`
             <tr data-id=${expense.id}>
                 <td>${expense.id}</td>
@@ -142,7 +140,7 @@ $(document).on("click", "#add", function(){
                     </div>
                 </td>
             </tr>
-            `)
+        `)
         }
-    })
+    });
 });
