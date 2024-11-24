@@ -5,6 +5,6 @@ TO-DOs:
 - ~~Create custom categories~~
 - Update expense
 - ~~Delete expense~~
-- Update category
+- ~~Update category~~
 - ~~Delete category~~
 - Monthly report
