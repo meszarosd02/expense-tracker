@@ -35,14 +35,14 @@ $(document).on("click", "#postExpense", function(){
         }),
         success: function(expense){
             console.log("asd");
-            $("#expenseTBody").append(`
+            $("#expense-tbody").append(`
             <tr data-id=${expense.id}>
-                <td>${expense.id}</td>
-                <td>${expense.name}</td>
-                <td>${expense.description}</td>
-                <td>${expense.date}</td>
-                <td>${expense.amount}</td>
-                <td>${expense.category.name}</td>
+                <td id="expense-id">${expense.id}</td>
+                <td id="expense-name">${expense.name}</td>
+                <td id="expense-desc">${expense.description}</td>
+                <td id="expense-date">${expense.date}</td>
+                <td id="expense-amount">${expense.amount}</td>
+                <td id="expense-category">${expense.category.name}</td>
                 <td>
                     <div class="expense-actions dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Műveletek</button>
@@ -57,6 +57,71 @@ $(document).on("click", "#postExpense", function(){
         }
     });
 });
+
+$(document).on("click", "#expense-modify", function(){
+    let id = $(this).attr("data-target");
+    let name = $(`#expense-tbody>tr[data-id=${id}]>td#expense-name`).text();
+    let desc = $(`#expense-tbody>tr[data-id=${id}]>td#expense-desc`).text();
+    let date = $(`#expense-tbody>tr[data-id=${id}]>td#expense-date`).text();
+    let amount = $(`#expense-tbody>tr[data-id=${id}]>td#expense-amount`).text();
+    let category_id = $(`#expense-tbody>tr[data-id=${id}]>td#expense-category`).attr("data-cat-id");
+    console.log(category_id);
+    $(`#expense-tbody>tr[data-id=${id}]`).replaceWith(
+        `<tr data-id=${id}>
+            <td>${id}</td>
+            <td><input type="text" name="Név" id="modify-expense-name" value=${name}></td>
+            <td><input type="text" name="Leírás" id="modify-expense-desc" value=${desc}></td>
+            <td><input type="date" name="Dátum" id="modify-expense-date" value=${date}></td>
+            <td><input type="number" name="Összeg" id="modify-expense-amount" value=${amount}></td>
+            <td>
+                <select name="Kategória" id="modify-expense-category" class="form-select">
+                </select>
+            </td>
+            <td>
+                <button class="btn btn-secondary" id="modify-expense-modify" data-target="12345">Módosítás</button>
+            </td>
+        </tr>`
+    )
+    $.ajax({
+        url: "/expense/api/category",
+        type: "GET",
+        success: function(categories){
+            $(`#expense-tbody>tr[data-id=${id}] select#modify-expense-category`).append(
+                `<option selected disabled>Válassz egy kategóriát</option>`
+            );
+            categories.forEach(function(category){
+                $(`#expense-tbody>tr[data-id=${id}] select#modify-expense-category`).append(
+                    `<option value=${category.id}>${category.name}</option>`
+                )
+            })
+            $(`#expense-tbody>tr[data-id=${id}] select#modify-expense-category`).append(
+                `<option id="add-category" value="-1">Új...</option>`
+            );
+            $(`#expense-tbody>tr[data-id=${id}] select#modify-expense-category`).val(category_id).change();
+        }
+    });
+});
+
+$(document).on("click", "#modify-expense-modify", function(){
+    let id = $(this).attr("data-target");
+    let name = $(`#expense-tbody>tr[data-id=${id}] input#modify-expense-name`).val();
+    let desc = $(`#expense-tbody>tr[data-id=${id}] input#modify-expense-desc`).val();
+    let date = $(`#expense-tbody>tr[data-id=${id}] input#modify-expense-date`).val();
+    let amount = $(`#expense-tbody>tr[data-id=${id}] input#modify-expense-amount`).val();
+    let category_id = $(`#expense-tbody>tr[data-id=${id}] select#modify-expense-category`).val();
+    $.ajax({
+        url: "/expense/api/expense",
+        type: "PUT",
+        contentType: "application/json",
+        data: JSON.stringify({
+
+        }),
+        success: function(expense){
+
+        }
+    })
+});
+
 $(document).on("click", "#expense-delete", function(){
     let id = $(this).attr("data-target");
     $.ajax({

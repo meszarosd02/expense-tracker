@@ -84,12 +84,12 @@
                             </thead>
                             <tbody id="expense-tbody" class="align-middle">
                                 <tr th:each="expense : ${expenses}" th:attr="data-id=${expense.id}">
-                                    <td th:text="${expense.id}"></td>
-                                    <td th:text="${expense.name}"></td>
-                                    <td th:text="${expense.description}"></td>
-                                    <td th:text="${expense.date}"></td>
-                                    <td th:text="${expense.amount}"></td>
-                                    <td th:text="${expense.category.name}"></td>
+                                    <td id="expense-id" th:text="${expense.id}"></td>
+                                    <td id="expense-name" th:text="${expense.name}"></td>
+                                    <td id="expense-desc" th:text="${expense.description}"></td>
+                                    <td id="expense-date" th:text="${expense.date}"></td>
+                                    <td id="expense-amount" th:text="${expense.amount}"></td>
+                                    <td id="expense-category" th:text="${expense.category.name}" th:attr="data-cat-id=${expense.category.id}"></td>
                                     <td><div class="expense-actions dropdown">
                                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Műveletek</button>
                                         <ul class="dropdown-menu">
@@ -130,7 +130,7 @@
                                 <tr>
                                     <td>12345</td>
                                     <td><input type="text" name="category-name" id="modify-category-name" value="Travel" data-target="12345"></td>
-                                    <td><button class="btn btn-secondary">Módosítás</button></td>
+                                    <td><button class="btn btn-secondary" id="modify-category-modify" data-target="12345">Módosítás</button></td>
                                 </tr>
                             </tbody>
                         </table>
