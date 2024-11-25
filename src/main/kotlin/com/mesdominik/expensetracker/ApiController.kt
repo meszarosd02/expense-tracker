@@ -46,6 +46,11 @@ class ApiController(
     }
 
     //CATEGORIES
+    @GetMapping("/category")
+    fun getCategory(): List<Category>{
+        return categoryService.findAllCategories()
+    }
+
     @PostMapping("/category")
     fun postCategory(@RequestBody body: CategoryForm): Category {
         val newCategory = Category(name = body.name)
