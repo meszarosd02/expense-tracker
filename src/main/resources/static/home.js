@@ -78,7 +78,7 @@ $(document).on("click", "#expense-modify", function(){
                 </select>
             </td>
             <td>
-                <button class="btn btn-secondary" id="modify-expense-modify" data-target="12345">Módosítás</button>
+                <button class="btn btn-secondary" id="modify-expense-modify" data-target="${id}">Módosítás</button>
             </td>
         </tr>`
     )
@@ -114,10 +114,31 @@ $(document).on("click", "#modify-expense-modify", function(){
         type: "PUT",
         contentType: "application/json",
         data: JSON.stringify({
-
+            id: id,
+            name: name,
+            description: desc,
+            date: date,
+            amount: amount,
+            category: category_id
         }),
         success: function(expense){
-
+            $(`#expense-tbody>tr[data-id=${expense.id}]`).replaceWith(
+                `<tr data-id=${expense.id}>
+                    <td id="expense-id">${expense.id}</td>
+                    <td id="expense-name">${expense.name}</td>
+                    <td id="expense-desc">${expense.description}</td>
+                    <td id="expense-date">${expense.date}</td>
+                    <td id="expense-amount">${expense.amount}</td>
+                    <td id="expense-category" data-cat-id=${expense.category.id}>${expense.category.name}</td>
+                    <td><div class="expense-actions dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">Műveletek</button>
+                        <ul class="dropdown-menu">
+                            <li><a id="expense-delete" class="dropdown-item" data-target=${expense.id}>Törlés</a></li>
+                            <li><a id="expense-modify" class="dropdown-item" data-target=${expense.id}>Módosítás</a></li>
+                        </ul>
+                    </div></td>
+                </tr>`
+            )
         }
     })
 });
