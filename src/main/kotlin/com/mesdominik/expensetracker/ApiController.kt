@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.mesdominik.expensetracker.bodymappings.CategoryForm
 import com.mesdominik.expensetracker.bodymappings.CategoryFormWithId
 import com.mesdominik.expensetracker.bodymappings.ExpenseForm
+import com.mesdominik.expensetracker.bodymappings.ExpenseFormWithId
 import com.mesdominik.expensetracker.entity.Category
 import com.mesdominik.expensetracker.entity.Expense
 import org.springframework.web.bind.annotation.*
@@ -41,8 +42,17 @@ class ApiController(
     }
 
     @PutMapping("/expense")
-    fun modifyExpense(@RequestBody body: ExpenseForm): Expense {
-        return Expense(name = "", category = Category(name = ""))
+    fun modifyExpense(@RequestBody body: ExpenseFormWithId): Expense {
+        val newExpense = Expense(
+            id = body.id,
+            name = body.name,
+            description = body.description,
+            date = LocalDate.parse(body.date),
+            amount = body.amount,
+            category = categoryService.findCategoryById(body.category)
+        )
+        expenseService.updateExpense(newExpense)
+        return newExpense
     }
 
     //CATEGORIES
